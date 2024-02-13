@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake Game</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    canvas {
+      border: 2px solid #333;
+      background-color: #ddd;
+      display: none; /* Initially hide canvas */
+    }
+    #startMenu, #optionsMenu {
+      text-align: center;
+    }
+    #optionsMenu {
+      display: none; /* Initially hide options menu */
+    }
+  </style>
+</head>
+<body>
+  <div id="startMenu">
+    <h1>Welcome to Snake Game</h1>
+    <button id="startButton">Start Game</button>
+    <br><br>
+    <button id="optionsButton">Options</button>
+  </div>
+  <div id="optionsMenu">
+    <h1>Options Menu</h1>
+    <label for="snakeColorSelect">Snake Color:</label>
+    <select id="snakeColorSelect">
+      <option value="green">Green</option>
+      <option value="blue">Blue</option>
+      <option value="red">Red</option>
+    </select>
+    <br><br>
+    <button id="backToStartButton">Back to Start Menu</button>
+  </div>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <script src="snake.js" defer></script>
+</body>
+</html>
