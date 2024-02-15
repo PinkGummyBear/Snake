@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Snake Game</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
       display: flex;
@@ -17,36 +19,63 @@
       background-color: #ddd;
       display: none; /* Initially hide canvas */
     }
-    #startMenu, #optionsMenu {
+    #startMenu, #optionsMenu, #gameOverScreen {
       text-align: center;
     }
-    #optionsMenu {
-      display: none; /* Initially hide options menu */
+    #optionsMenu, #gameOverScreen {
+      display: none; /* Initially hide options and game over screens */
+    }
+    #scoreboard {
+      position: absolute;
+      left: 50px; /* Adjust this value to move the scoreboard slightly to the left */
+      top: 0;
     }
   </style>
 </head>
 <body>
-  <div id="startMenu">
+  <div id="startMenu" class="container">
     <h1>Welcome to Snake Game</h1>
-    <button id="startButton">Start Game</button>
-    <br><br>
-    <button id="optionsButton">Options</button>
+    <button id="startButton" class="btn btn-primary btn-lg">Start Game</button>
+    <div class="mt-3">
+      <button id="optionsButton" class="btn btn-secondary">Options</button>
+    </div>
   </div>
-  <div id="optionsMenu">
+  <div id="optionsMenu" class="container">
     <h1>Options Menu</h1>
     <label for="snakeColorSelect">Snake Color:</label>
-    <select id="snakeColorSelect">
+    <select id="snakeColorSelect" class="form-control">
       <option value="green">Green</option>
       <option value="blue">Blue</option>
       <option value="red">Red</option>
     </select>
-    <br><br>
-    <input checked="checked" type="checkbox" id="soundToggle">
-    <label for="soundToggle">Sound</label>
-    <br><br>
-    <button id="backToStartButton">Back to Start Menu</button>
+    <div class="mt-3">
+      <div class="form-check">
+        <input checked="checked" type="checkbox" class="form-check-input" id="soundToggle">
+        <label class="form-check-label" for="soundToggle">Sound</label>
+      </div>
+    </div>
+    <div class="mt-3">
+      <button id="backToStartButton" class="btn btn-primary">Back to Start Menu</button>
+    </div>
   </div>
+
+  <div id="scoreboard" style="display: none;">
+    <p>Score: <span id="currentScore">0</span></p>
+    <p>High Score: <span id="highScore">0</span></p>
+  </div>
+  <div id="gameOverScreen" class="container" style="display: none;">
+    <h1>Game Over!</h1>
+    <p>Your score: <span id="finalScore"></span></p>
+    <div class="mt-3">
+      <button id="retryButton" class="btn btn-success">Retry</button>
+      <button id="exitButton" class="btn btn-danger">Exit</button>
+    </div>
+  </div>
+
   <canvas id="gameCanvas" width="400" height="400"></canvas>
+  
+  <!-- Bootstrap JS (Optional: Only if you need Bootstrap functionality) -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="snake.js" defer></script>
 </body>
 </html>

@@ -24,16 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let bearMode = false; // Variable to track bear mode
 
   // Load sound effects
-  const backgroundSound = new Audio('background.mp3');
-  const deathSound = new Audio('death.mp3');
-  const collectSound = new Audio('collect.mp3');
-  const customizeSound = new Audio('customize.mp3');
-  const buttonPressSound = new Audio('buttonpress.mp3');
+  const backgroundSound = new Audio('SoundEffect/background.mp3');
+  const deathSound = new Audio('SoundEffect/death.mp3');
+  const collectSound = new Audio('SoundEffect/collect.mp3');
+  const customizeSound = new Audio('SoundEffect/customize.mp3');
+  const buttonPressSound = new Audio('SoundEffect/buttonpress.mp3');
 
   function playSound(sound) {
     sound.currentTime = 0;
     sound.play();
   }
+
+  
 
   const soundToggle = document.getElementById('soundToggle');
   soundToggle.addEventListener('change', () => {
@@ -105,42 +107,70 @@ document.addEventListener('DOMContentLoaded', () => {
     if (direction === 'DOWN') snakeY += box;
 
     if (snakeX === food.x && snakeY === food.y) {
-      score++;
-      food = {
-        x: Math.floor(Math.random() * (canvasWidth / box)) * box,
-        y: Math.floor(Math.random() * (canvasHeight / box)) * box
-      };
-      playSound(collectSound); // Play collect sound
+        score++;
+        document.getElementById('currentScore').textContent = score; // Update the score
+        const currentHighScore = localStorage.getItem('highScore') || 0;
+        if (score > currentHighScore) {
+          localStorage.setItem('highScore', score);
+          document.getElementById('highScore').textContent = score; // Update the high score display
+          }
+
+        food = {
+            x: Math.floor(Math.random() * (canvasWidth / box)) * box,
+            y: Math.floor(Math.random() * (canvasHeight / box)) * box
+        };
+        playSound(collectSound); // Play collect sound
     } else {
-      snake.pop();
+        snake.pop();
     }
 
     let newHead = {
-      x: snakeX,
-      y: snakeY
+        x: snakeX,
+        y: snakeY
     };
 
     if (
-      snakeX < 0 ||
-      snakeY < 0 ||
-      snakeX >= canvasWidth ||
-      snakeY >= canvasHeight ||
-      collision(newHead, snake)
+        snakeX < 0 ||
+        snakeY < 0 ||
+        snakeX >= canvasWidth ||
+        snakeY >= canvasHeight ||
+        collision(newHead, snake)
     ) {
-      playSound(deathSound); // Play death sound
-      gameOver();
-      return;
+        playSound(deathSound); // Play death sound
+        gameOver();
+        return;
     }
 
     snake.unshift(newHead);
+}
+
+
+  function updateScore() {
+    document.getElementById('currentScore').textContent = score;
+    document.getElementById('highScore').textContent = localStorage.getItem('highScore') || 0;
   }
+  
+  document.getElementById('retryButton').addEventListener('click', () => {
+    playSound(buttonPressSound); // Play button press sound
+    resetGame(); // Restart the game
+    startGame(); // Start the game again
+});
+
+document.getElementById('exitButton').addEventListener('click', () => {
+    playSound(buttonPressSound); // Play button press sound
+    document.getElementById('gameOverScreen').style.display = 'none'; // Hide game over screen
+    document.getElementById('startMenu').style.display = 'block'; // Show start menu
+});
 
   function startGame() {
     playSound(backgroundSound); // Start background music
     canvas.style.display = 'block';
     document.getElementById('startMenu').style.display = 'none';
-
+    document.getElementById('scoreboard').style.display = 'block';
     gameInterval = setInterval(draw, 100);
+
+    score = 0;
+    updateScore();
   }
 
   function openOptionsMenu() {
@@ -157,29 +187,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function gameOver() {
     clearInterval(gameInterval);
-    alert(`Game Over! Your score: ${score}`);
-    resetGame();
-  }
+    document.getElementById('scoreboard').style.display = 'none'; // Hide scoreboard
+    document.getElementById('gameOverScreen').style.display = 'block'; // Show game over screen
+    document.getElementById('finalScore').textContent = score; // Update final score
 
-  function resetGame() {
-    snake = [{
+    const currentHighScore = localStorage.getItem('highScore') || 0;
+    if (score > currentHighScore) {
+        localStorage.setItem('highScore', score);
+        document.getElementById('highScore').textContent = score; // Update high score if beaten
+    }
+
+    // Hide canvas and start menu
+    document.getElementById('gameCanvas').style.display = 'none';
+    document.getElementById('startMenu').style.display = 'none';
+}
+
+
+
+function resetGame() {
+  snake = [{
       x: canvasWidth / 2,
       y: canvasHeight / 2
-    }];
-    direction = 'RIGHT';
-    score = 0;
-    food = {
+  }];
+  direction = 'RIGHT';
+  score = 0;
+  food = {
       x: Math.floor(Math.random() * (canvasWidth / box)) * box,
       y: Math.floor(Math.random() * (canvasHeight / box)) * box
-    };
+  };
 
-    // Stop background music
-    backgroundSound.pause();
-    backgroundSound.currentTime = 0;
+  // Stop background music
+  backgroundSound.pause();
+  backgroundSound.currentTime = 0;
 
-    canvas.style.display = 'none';
-    document.getElementById('startMenu').style.display = 'block';
-  }
+  // Hide game over screen
+  document.getElementById('gameOverScreen').style.display = 'none';
+
+  // Display start menu
+  document.getElementById('startMenu').style.display = 'block';
+}
+
 
   document.getElementById('startButton').addEventListener('click', () => {
     playSound(buttonPressSound); // Play button press sound
@@ -230,5 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
     snakeColor = this.value;
     playSound(customizeSound);
   });
+
+
+
+  updateScore();
 });
+
 
