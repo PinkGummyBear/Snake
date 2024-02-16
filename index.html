@@ -49,10 +49,8 @@
       <option value="red">Red</option>
     </select>
     <div class="mt-3">
-      <div class="form-check">
-        <input checked="checked" type="checkbox" class="form-check-input" id="soundToggle">
-        <label class="form-check-label" for="soundToggle">Sound</label>
-      </div>
+        <input type="range" class="form-control-range" id="soundVolume" min="0" max="1" step="0.1" value="1">
+        <label for="soundVolume">Sound Volume:</label>
     </div>
     <div class="mt-3">
       <button id="backToStartButton" class="btn btn-primary">Back to Start Menu</button>

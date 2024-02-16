@@ -37,38 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   
 
-  const soundToggle = document.getElementById('soundToggle');
-  soundToggle.addEventListener('change', () => {
-   
-      if (soundToggle.checked) {
-          // Enable sound effects
-          backgroundSound.muted = false;
-          // Enable other sound effects similarly
-      } else {
-          // Disable sound effects
-          backgroundSound.muted = true;
-          // Disable other sound effects similarly
-      }
-  
-  });
-
-  soundToggle.addEventListener('change', () => {
-    if (soundToggle.checked) {
-      // Enable sound effects
-      backgroundSound.muted = false;
-      deathSound.muted = false;
-      collectSound.muted = false;
-      customizeSound.muted = false;
-      buttonPressSound.muted = false;
-    } else {
-      // Disable sound effects
-      backgroundSound.muted = true;
-      deathSound.muted = true;
-      collectSound.muted = true;
-      customizeSound.muted = true;
-      buttonPressSound.muted = true;
-    }
-  });
+  const soundVolumeInput = document.getElementById('soundVolume');
+    soundVolumeInput.addEventListener('input', () => {
+    const volume = parseFloat(soundVolumeInput.value);
+    backgroundSound.volume = volume;
+    deathSound.volume = volume;
+    collectSound.volume = volume;
+    customizeSound.volume = volume;
+    buttonPressSound.volume = volume;
+});
 
   const snakeHeadImage = new Image();
   snakeHeadImage.src = 'snake_head.png'; // Path to your snake head image
@@ -159,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('exitButton').addEventListener('click', () => {
     playSound(buttonPressSound); // Play button press sound
     document.getElementById('gameOverScreen').style.display = 'none'; // Hide game over screen
+    resetGame(); // Reset the game
     document.getElementById('startMenu').style.display = 'block'; // Show start menu
 });
 
@@ -282,5 +260,4 @@ function resetGame() {
 
   updateScore();
 });
-
 
