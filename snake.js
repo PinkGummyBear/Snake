@@ -161,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('scoreboard').style.display = 'none';
       document.getElementById('gameOverScreen').style.display = 'block';
       document.getElementById('finalScore').textContent = score;
+      document.getElementById('finalHighScore').textContent = highScore;
 
       // Hide canvas and start menu
       document.getElementById('gameCanvas').style.display = 'none';
